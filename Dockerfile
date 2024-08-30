@@ -11,6 +11,8 @@ LABEL maintainer="alva-seal"
 RUN apt-get update 
 #RUN apt-get install -y python pip calibre
 RUN apt-get install -y vim
+RUN apt-get install -y python3
+RUN apt-get install -y pip
 
 # set the working directory in the container
 WORKDIR /app
@@ -27,4 +29,7 @@ COPY code/ .
 VOLUME /config
 
 # command to run on container start
-CMD [ "python", "./tolino-sync.py"] 
+CMD [ "python", "./tolino-sync.py"]
+
+VOLUME /config
+VOLUME /libraary
