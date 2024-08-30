@@ -33,4 +33,4 @@ VOLUME /config
 CMD [ "python", "./tolino-sync.py"]
 
 VOLUME /config
-VOLUME /libraary
+VOLUME /library
