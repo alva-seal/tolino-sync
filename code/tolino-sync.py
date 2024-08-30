@@ -7,7 +7,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc
 from sqlalchemy.orm import relationship, sessionmaker
 
-while true:
+while True:
     time.sleep(20)
     print('.')
 
@@ -128,6 +128,6 @@ if 'patches' in syncdict:
         session.commit()
         
  
-while true:
+while True:
     time.sleep(20)
     print('.')
