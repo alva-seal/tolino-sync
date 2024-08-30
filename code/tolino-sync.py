@@ -1,6 +1,7 @@
 from pytolino.tolino_cloud import Client, PytolinoException
 import datetime
 import os
+import time
 import pickle
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc
@@ -115,4 +116,8 @@ if 'patches' in syncdict:
                 
             session.add(patch_data)
         session.commit()
-
+        
+ 
+while true:
+    time.sleep(20)
+    print('.')
