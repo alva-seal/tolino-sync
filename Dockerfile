@@ -4,11 +4,11 @@ FROM ghcr.io/linuxserver/baseimage-ubuntu:jammy
 LABEL org.opencontainers.image.description tolino-sync to tolino cloud and optional with calibre
 
 RUN apt-get update
-RUN apt-get install -y python pip calibre
+#RUN apt-get install -y python pip calibre
 #RUN apt-get install -y ffmpeg
 
 # set the working directory in the container
-WORKDIR /config
+WORKDIR /code
 
 # copy the dependencies file to the working directory
 COPY requirements.txt .
