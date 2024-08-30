@@ -1,0 +1,32 @@
+services:
+  bookbounty:
+    image: ghcr.io/alva-seal/tolino-sync:main
+    container_name: tolinosync
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+    volumes:
+      - /opt/tolino:/config 
+      - /opt/calibre-web/library:/library
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=traefik_default"
+      - "traefik.http.routers.tolino.rule=Host(`tolino.${DOMAIN}`)"
+      - "traefik.http.routers.tolino.entrypoints=websecure"
+      - "traefik.http.services.tolino.loadbalancer.server.port=1337"
+      - "traefik.http.routers.tolino.service=tolino"
+      - "traefik.http.routers.tolino.tls.certresolver=cloudflare"
+      - "traefik.http.routers.tolino.middlewares=secure-headers,authelia@docker"
+      - "traefik.http.routers.tolino.middlewares=authelia@docker"
+      - "homepage.group=Services"
+      - "homepage.name=Tolino Sync"
+      - "homepage.href=https://tolino.${DOMAIN}/"
+      - "homepage.description=tolinosync"
+    networks:
+      - traefik_default
+
+networks:
+  traefik_default:
+    external: true
