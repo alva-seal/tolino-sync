@@ -19,7 +19,7 @@ tolino_password = os.environ['TOLINO_PASSWORD']
 debug = os.environ['DEBUG']
 
 
-engine = create_engine('sqlite:////config/tolino-sync.db', echo = debug)
+#engine = create_engine('sqlite:////config/tolino-sync.db', echo = debug)
 engine = create_engine('sqlite:////config/tolino-sync.db')
 
 class Base(DeclarativeBase):
