@@ -14,6 +14,7 @@ RUN apt-get install -y vim
 RUN apt-get install -y python3
 RUN apt-get install -y pip
 RUN apt-get install -y git
+RUN pip install git+https://github.com/alva-seal/pytolino.git
 
 # set the working directory in the container
 WORKDIR /code
