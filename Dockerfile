@@ -14,7 +14,7 @@ RUN apt-get install -y vim
 RUN apt-get install -y python3
 RUN apt-get install -y pip
 RUN apt-get install -y git
-RUN pip install git+https://github.com/alva-seal/pytolino.git
+#RUN pip install git+https://github.com/alva-seal/pytolino.git
 
 # set the working directory in the container
 WORKDIR /code
@@ -24,6 +24,7 @@ COPY requirements.txt .
 
 # install dependencies
 RUN pip install -r requirements.txt
+RUN pip install git+https://github.com/alva-seal/pytolino.git
 
 # copy the content of the local src directory to the working directory
 COPY code/ .
