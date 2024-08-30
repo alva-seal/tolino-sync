@@ -1,6 +1,8 @@
 # set base image (host OS)
 FROM python:3.9
 
+LABEL org.opencontainers.image.description tolino-sync to tolino cloud and optional with calibre
+
 RUN apt-get update
 #RUN apt-get install -y ffmpeg
 
