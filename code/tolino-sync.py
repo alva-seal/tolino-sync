@@ -7,18 +7,14 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc
 from sqlalchemy.orm import relationship, sessionmaker
 
-while True:
-    time.sleep(20)
-    print('.')
-
 
 tolino_user = os.environ['TOLINO_USER']
 tolino_password = os.environ['TOLINO_PASSWORD']
 debug = os.environ['DEBUG']
 
 
-engine = create_engine('sqlite:///config/tolino_sync.db', echo = True)
-engine = create_engine('sqlite://config/tolino_sync.db')
+engine = create_engine('sqlite:////config/tolino-sync.db', echo = debug)
+engine = create_engine('sqlite:////config/tolino-sync.db')
 
 class Base(DeclarativeBase):
     pass
@@ -59,7 +55,6 @@ Session = sessionmaker(bind=engine)
 with Session() as session:
     results = session.query(Syncs).order_by(desc(Syncs.date)).first()
 revision = results.revision
-print(revision)
 get_data = True
 if get_data:
     client = Client()
