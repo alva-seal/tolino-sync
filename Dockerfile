@@ -1,9 +1,10 @@
 # set base image (host OS)
-FROM python:3.9
+FROM ghcr.io/linuxserver/baseimage-ubuntu:latest
 
 LABEL org.opencontainers.image.description tolino-sync to tolino cloud and optional with calibre
 
 RUN apt-get update
+RUN apt-get install -y python pip calibre
 #RUN apt-get install -y ffmpeg
 
 # set the working directory in the container
@@ -19,4 +20,4 @@ RUN pip install -r requirements.txt
 COPY code/ .
 
 # command to run on container start
-CMD [ "python", "./sealbot.py" 
+CMD [ "python", "./tolino-sync.py"] 
