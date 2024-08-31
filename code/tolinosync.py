@@ -13,7 +13,6 @@ def main():
     config = configparser.ConfigParser()
     config.read('/config/tolino-sync.ini')
 
-
     tolino_user = config['TOLINO']['TOLINO_USER']
     tolino_password = config['TOLINO']['TOLINO_PASSWORD']
     debuging = config['TOLINO']['DEBUG']
@@ -133,10 +132,9 @@ def main():
     except:
         return "Sync with cloud failed!"
 
-
-    if 'epubMetaData' in inventory:
+    if len(inventory) > 0:
         with Session() as session:
-            with item in inventory:
+            for item in inventory:
                 results = session.query(Resellers.id).filter(Resellers.id == item['resellerId'])
                 if results == None:
                     reseller = Resellers(
@@ -156,7 +154,7 @@ def main():
                     session.commit()
                     author_id = author.id
                 else:
-                    author_id = results.id 
+                    author_id = results 
                 results = session.query(Books.id).filter(Books.tolino_identifier == item['epubMetaData']['identifier'])
                 if results == None:
                     if length(item['epubMetaData']['issued']) == 13:
@@ -191,11 +189,10 @@ def main():
                         rendering = item['ext_data']['renderingEngineSuitable']
                     )
                     result = session.add(book)
-                    session.commit() 
-
-    
-    
-
+                    session.commit()
+                    return('books committed')
+                     
+    return('premature end')
     if 'patches' in syncdict:
         with Session() as session:
             sync = Syncs(revision = revision, date = datetime.datetime.now())
