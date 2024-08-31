@@ -3,17 +3,23 @@ import datetime
 import os
 import time
 import pickle
+import configparser
 from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc
 from sqlalchemy.orm import relationship, sessionmaker
 
-tolino_user = os.environ['TOLINO_USER']
-tolino_password = os.environ['TOLINO_PASSWORD']
-debug = os.environ['DEBUG']
+config = configparser.ConfigParser()
+config.read('/config/tolino-sync.ini')
 
 
-#engine = create_engine('sqlite:////config/tolino-sync.db', echo = debug)
-engine = create_engine('sqlite:////config/tolino-sync.db')
+tolino_user = config['TOLINO_USER']
+tolino_password = config['TOLINO_PASSWORD']
+debuging = config['DEBUG']
+
+if debugging:
+    engine = create_engine('sqlite:////config/tolino-sync.db', echo = True)
+else:
+    engine = create_engine('sqlite:////config/tolino-sync.db')
 
 class Base(DeclarativeBase):
     pass
