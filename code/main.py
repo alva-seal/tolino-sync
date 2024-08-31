@@ -17,7 +17,7 @@ def hello_world():
     
     
 @app.route('/sync')
-def sync()
+def sync():
     #return main()
     return 'blub'
 
