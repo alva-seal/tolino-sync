@@ -107,7 +107,7 @@ def main():
     
     try:
         get_data = False
-        if get_data
+        if get_data:
             client = Client()
             client.login(tolino_user, tolino_password)
             client.register()
