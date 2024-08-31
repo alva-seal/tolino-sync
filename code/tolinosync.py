@@ -35,12 +35,48 @@ def main():
         date = Column(DateTime(timezone=True), onupdate=func.now()) 
         patch = relationship("Patches", backref = "sync")
 
+    class Books(Base):
+        __tablename__ = "books"
+        id = Column(Integer, primary_key=True)
+        tolino_identifier = Column(String)
+        calibre_uuid = Column(String)
+        calibre_id = Column(Integer)
+        title = Column(String)
+        reseller_id = Column(Integer, ForeignKey('books.id')) 
+        publisher = Column(String)
+        booktype = Column(String)
+        issued = Column(DateTime(timezone=True))
+        book_format = Column(String)
+        epubversion = Column(Float)
+        author_id = Column(Integer, ForeignKey('books.id')) 
+        tolino_last_modified = Column(DateTime(timezone=True))
+        cover_url = Column(String)
+        tolino_cover_last_modified = Column(DateTime(timezone=True))
+        book_url = Column(String)
+        tolino_book_last_modified = Column(DateTime(timezone=True))
+        book_filesize = Column(Integer)
+        protection = Column(String)
+        transaction = Column(String)
+        rendering = Column(String)
+        
+    class Authors(Base):
+        __tablename__ = "authors"
+        id = Column(Integer, primary_key=True)
+        name = Column(String)
+        first_name = Column(String)
+        last_name = Column(String)
+             
+    class Resellers(Base):
+        __tablename__ = "resellers"
+        id = Column(Integer, primary_key=True)
+        name = Column(String)
+        
     class Patches(Base):
         __tablename__ = "patches"
         id = Column(Integer, primary_key=True)
         position = Column(String)
         category = Column(String)
-        book = Column(String)
+        book_id = Column(Integer, ForeignKey('books.id')) 
         op_type  = Column(String)
         name = Column(String)
         startPosition = Column(String)
@@ -54,7 +90,7 @@ def main():
         text = Column(String)
         endPosition = Column(String)
         revision = Column(String)
-        sync_id = Column(Integer,  ForeignKey('syncs.id'))
+        sync_id = Column(Integer, ForeignKey('syncs.id'))
         #sync = relationship("Syncs", back_populates = "patches")
 
     Base.metadata.create_all(engine)
@@ -64,24 +100,26 @@ def main():
     with Session() as session:
         results = session.query(Syncs).order_by(desc(Syncs.date)).first()
     revision = results.revision
-    get_data = True
-    if get_data:
-        client = Client()
-        client.login(tolino_user, tolino_password)
-        client.register()
-        inventory = client.get_inventory()
-        response = client.sync(revision)
-        client.logout()
-        file = open('data2', 'wb')
-        pickle.dump(response, file)
-        file.close()
-    else:
-        file = open('data', 'rb')
-        response = pickle.load(file)
-        file.close()
+    try:
+            get_data = True
+        if get_data
+            client = Client()
+            client.login(tolino_user, tolino_password)
+            client.register()
+            inventory = client.get_inventory()
+            response = client.sync(revision)
+            client.logout()
+            file = open('/config/data2', 'wb')
+            pickle.dump(response, file)
+            file.close()
+        else:
+            file = open('/config/data', 'rb')
+            response = pickle.load(file)
+            file.close()
+    except:
+        return "Sync with cloud failed!"
     syncdict= response
     revision = syncdict['revision']
-
 
     if 'patches' in syncdict:
         with Session() as session:
