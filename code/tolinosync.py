@@ -5,7 +5,7 @@ import time
 import pickle
 import configparser
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc, and_, Query
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc, and_
 from sqlalchemy.orm import relationship, sessionmaker
 
 
@@ -219,8 +219,7 @@ def main():
                 endPosition =  patch['value']['endPosition'] if 'endPosition' in patch['value'] else None
                 op_type = path.split('/')[3]
                 book = path.split('/')[2]
-                results = Query(Books).filter_by(Books.tolino_identifier == book)
-                book_id = results.id
+                book_id = session.query(Books.id).filter(Books.tolino_identifier == book)
                 patch_data = Patches(
                         position = position,
                         category = category,
