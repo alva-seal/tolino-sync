@@ -1,6 +1,6 @@
 # An object of Flask class is our WSGI application.
 from flask import Flask, render_template
-#from tolinosync import main
+from tolinosync import main
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
@@ -18,8 +18,8 @@ def hello_world():
     
 @app.route('/sync')
 def sync():
-    #return main()
-    return 'blub'
+    return main()
+    #return 'blub'
 
 # main driver function
 if __name__ == '__main__':
