@@ -16,7 +16,9 @@ tolino_user = config['TOLINO']['TOLINO_USER']
 tolino_password = config['TOLINO']['TOLINO_PASSWORD']
 debuging = config['TOLINO']['DEBUG']
 
-if debuging:
+debuging = False;
+
+if debuging is True:
     engine = create_engine('sqlite:////config/tolino-sync.db', echo = True)
 else:
     engine = create_engine('sqlite:////config/tolino-sync.db')
@@ -75,7 +77,7 @@ else:
     file = open('data', 'rb')
     response = pickle.load(file)
     file.close()
-syncdict= response
+syncdict= response.json()
 revision = syncdict['revision']
 
 
