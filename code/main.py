@@ -18,7 +18,7 @@ def hello_world():
     
 @app.route('/sync')
 def sync()
-    return tolino-sync.main()
+    return main()
 
 
 # main driver function
