@@ -22,8 +22,8 @@ WORKDIR /code
 COPY requirements.txt .
 
 # install dependencies
-RUN pip install -r requirements.txt
-RUN pip install git+https://github.com/alva-seal/pytolino.git
+RUN pip install -r requirements.txt --break-system-packages.
+RUN pip install git+https://github.com/alva-seal/pytolino.git --break-system-packages.
 
 # copy the content of the local src directory to the working directory
 COPY code/ .
