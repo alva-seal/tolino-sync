@@ -145,7 +145,7 @@ def main():
                     )
                     result = session.add(reseller)
                     session.commit()
-                results = session.query(Authors).filter_by(and_(Authors.name == item['epubMetaData']['author']['name'], Authors.first_name = item['epubMetaData']['author']['firstName'], Authors.last_name = item['epubMetaData']['author']['lastName'], )
+                results = session.query(Authors).filter_by(and_(Authors.name == item['epubMetaData']['author']['name'], Authors.first_name == item['epubMetaData']['author']['firstName'], Authors.last_name == item['epubMetaData']['author']['lastName'], )
                 if results == None:
                     author = Authors(
                         name = item['epubMetaData']['author']['name'],
