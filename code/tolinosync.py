@@ -143,12 +143,12 @@ def main():
                     )
                     result = session.add(reseller)
                     session.commit()
-                results = session.query(Authors.id).filter(and_(Authors.name == item['epubMetaData']['author']['name'], Authors.first_name == item['epubMetaData']['author']['firstName'], Authors.last_name == item['epubMetaData']['author']['lastName']))
+                results = session.query(Authors.id).filter(and_(Authors.name == item['epubMetaData']['author'][0]['name'], Authors.first_name == item['epubMetaData']['author'][0]['firstName'], Authors.last_name == item['epubMetaData']['author'][0]['lastName']))
                 if results == None:
                     author = Authors(
-                        name = item['epubMetaData']['author']['name'],
-                        first_name = item['epubMetaData']['author']['firstName'],
-                        last_name = item['epubMetaData']['author']['lastName']
+                        name = item['epubMetaData']['author'][0]['name'],
+                        first_name = item['epubMetaData']['author'][0]['firstName'],
+                        last_name = item['epubMetaData']['author'][0]['lastName']
                     )
                     result = session.add(author)
                     session.commit()
