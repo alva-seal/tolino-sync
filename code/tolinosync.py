@@ -192,7 +192,7 @@ def main():
                     session.commit()
                     return('books committed')
                      
-    return('premature end')
+                return('premature end')
     if 'patches' in syncdict:
         with Session() as session:
             sync = Syncs(revision = revision, date = datetime.datetime.now())
