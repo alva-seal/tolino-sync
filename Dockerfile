@@ -1,7 +1,7 @@
 # set base image (host OS)
 FROM ghcr.io/linuxserver/baseimage-ubuntu:noble
 
-LABEL org.opencontainers.image.description tolino-sync to tolino cloud and optional with calibre
+LABEL org.opencontainers.image.description="tolino-sync to tolino cloud and optional with calibre"
 # set version label
 ARG BUILD_DATE
 ARG VERSION
@@ -22,8 +22,8 @@ WORKDIR /code
 COPY requirements.txt .
 
 # install dependencies
-RUN pip install -r requirements.txt --break-system-packages.
-RUN pip install git+https://github.com/alva-seal/pytolino.git --break-system-packages.
+RUN pip install --break-system-packages -r requirements.txt
+RUN pip install --break-system-packages git+https://github.com/alva-seal/pytolino.git 
 
 # copy the content of the local src directory to the working directory
 COPY code/ .
