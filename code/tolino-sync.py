@@ -7,7 +7,7 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc
 from sqlalchemy.orm import relationship, sessionmaker
 
-print(os.getlogin())
+print(os.path.expanduser())
 tolino_user = os.environ['TOLINO_USER']
 tolino_password = os.environ['TOLINO_PASSWORD']
 debug = os.environ['DEBUG']
