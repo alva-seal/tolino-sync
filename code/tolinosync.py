@@ -5,7 +5,7 @@ import time
 import pickle
 import configparser
 from sqlalchemy.orm import DeclarativeBase
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc, and_
 from sqlalchemy.orm import relationship, sessionmaker
 
 
@@ -38,7 +38,7 @@ def main():
     class Books(Base):
         __tablename__ = "books"
         id = Column(Integer, primary_key=True)
-        tolino_identifier = Column(String)
+        tolino_identifier = Column(String, unique=True)
         calibre_uuid = Column(String)
         calibre_id = Column(Integer)
         title = Column(String)
@@ -97,11 +97,16 @@ def main():
 
     Session = sessionmaker(bind=engine)
 
-    with Session() as session:
-        results = session.query(Syncs).order_by(desc(Syncs.date)).first()
-    revision = results.revision
+
     try:
-            get_data = True
+        with Session() as session:
+            results = session.query(Syncs).order_by(desc(Syncs.date)).first()
+        revision = results.revision
+    except:
+        revision = None 
+    
+    try:
+        get_data = False
         if get_data
             client = Client()
             client.login(tolino_user, tolino_password)
@@ -112,14 +117,84 @@ def main():
             file = open('/config/data2', 'wb')
             pickle.dump(response, file)
             file.close()
+            syncdict= response
+            revision = syncdict['revision']
         else:
+            client = Client()
+            client.login(tolino_user, tolino_password)
+            client.register()
+            inventory = client.get_inventory()
+            client.logout()
             file = open('/config/data', 'rb')
             response = pickle.load(file)
             file.close()
+            syncdict= response.json()
+            revision = syncdict['revision']
     except:
         return "Sync with cloud failed!"
-    syncdict= response
-    revision = syncdict['revision']
+
+
+    if 'epubMetaData' in inventory:
+        with Session() as session:
+            with item in inventory:
+                results = session.query(Resellers).filter_by(Resellers.id = item['resellerId'])
+                if results == None:
+                    reseller = Resellers(
+                        id = item['resellerId'],
+                        name = item['resellerId']
+                    )
+                    result = session.add(reseller)
+                    session.commit()
+                results = session.query(Authors).filter_by(and_(Authors.name = item['epubMetaData']['author']['name'], Authors.first_name = item['epubMetaData']['author']['firstName'], Authors.last_name = item['epubMetaData']['author']['lastName'], )
+                if results == None:
+                    author = Authors(
+                        name = item['epubMetaData']['author']['name'],
+                        first_name = item['epubMetaData']['author']['firstName'],
+                        last_name = item['epubMetaData']['author']['lastName']
+                    )
+                    result = session.add(author)
+                    session.commit()
+                    author_id = author.id
+                else:
+                    author_id = results.id 
+                results = session.query(Books).filter_by(Books.tolino_identifier = item['epubMetaData']['identifier'])
+                if results == None:
+                    if length(item['epubMetaData']['issued']) == 13:
+                        issued = datetime.datetime.fromtimestamp(item['epubMetaData']['issued']/1000)
+                    elif length(item['epubMetaData']['issued']) == 9:
+                        issued = datetime.datetime.fromtimestamp(item['epubMetaData']['issued'])
+                    else:
+                        issued = None
+                    if length(item['epubMetaData']['deliverable'][0]['purchased']) == 13:
+                        tolino_last_modified = datetime.datetime.fromtimestamp(item['epubMetaData']['deliverable'][0]['purchased']/1000)
+                    elif length(item['epubMetaData']['deliverable'][0]['purchased']) == 9:
+                        tolino_last_modified = datetime.datetime.fromtimestamp(item['epubMetaData']['deliverable'][0]['purchased'])
+                    else:
+                        tolino_last_modified = None
+                     
+                    book = Books(
+                        tolino_identifier = item['epubMetaData']['identifier'],
+                        title = item['epubMetaData']['title'],
+                        reseller_id = item['resellerId'],
+                        publisher = item['epubMetaData']['publisher'],
+                        booktype = item['epubMetaData']['type'],
+                        issued = issued,
+                        book_format = item['epubMetaData']['format'],
+                        epubversion = item['epubMetaData']['format'],
+                        author_id = author.id,
+                        tolino_last_modified = tolino_last_modified,
+                        cover_url = item['epubMetaData']['fileResource'][0]['resource'],
+                        book_url = item['epubMetaData']['deliverable'][0]['resource'],
+                        book_filesize = item['epubMetaData']['fileSize']
+                        protection = item['epubMetaData']['deliverable'][0]['protectionType']
+                        transaction = item['epubMetaData']['fileSize']
+                        rendering = item['ext_data']['renderingEngineSuitable']
+                    )
+                    result = session.add(book)
+                    session.commit() 
+
+    
+    
 
     if 'patches' in syncdict:
         with Session() as session:
