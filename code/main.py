@@ -1,6 +1,6 @@
 # An object of Flask class is our WSGI application.
 from flask import Flask
-#from tolino-sync import main
+#from tolinosync import main
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
