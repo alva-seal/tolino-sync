@@ -79,7 +79,7 @@ def main():
         file = open('data', 'rb')
         response = pickle.load(file)
         file.close()
-    syncdict= response.json()
+    syncdict= response
     revision = syncdict['revision']
 
 
