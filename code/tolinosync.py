@@ -106,7 +106,7 @@ def main():
         revision = None 
     
     try:
-        get_data = True
+        get_data = False
         if get_data:
             client = Client()
             client.login(tolino_user, tolino_password)
@@ -137,7 +137,7 @@ def main():
     if 'epubMetaData' in inventory:
         with Session() as session:
             with item in inventory:
-                results = session.query(Resellers).filter_by(Resellers.id == item['resellerId'])
+                results = session.query(Resellers.id).filter(Resellers.id == item['resellerId'])
                 if results == None:
                     reseller = Resellers(
                         id = item['resellerId'],
@@ -145,7 +145,7 @@ def main():
                     )
                     result = session.add(reseller)
                     session.commit()
-                results = session.query(Authors).filter_by(and_(Authors.name == item['epubMetaData']['author']['name'], Authors.first_name == item['epubMetaData']['author']['firstName'], Authors.last_name == item['epubMetaData']['author']['lastName']))
+                results = session.query(Authors.id).filter(and_(Authors.name == item['epubMetaData']['author']['name'], Authors.first_name == item['epubMetaData']['author']['firstName'], Authors.last_name == item['epubMetaData']['author']['lastName']))
                 if results == None:
                     author = Authors(
                         name = item['epubMetaData']['author']['name'],
@@ -157,7 +157,7 @@ def main():
                     author_id = author.id
                 else:
                     author_id = results.id 
-                results = session.query(Books).filter_by(Books.tolino_identifier == item['epubMetaData']['identifier'])
+                results = session.query(Books.id).filter(Books.tolino_identifier == item['epubMetaData']['identifier'])
                 if results == None:
                     if length(item['epubMetaData']['issued']) == 13:
                         issued = datetime.datetime.fromtimestamp(item['epubMetaData']['issued']/1000)
