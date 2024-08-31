@@ -185,9 +185,9 @@ def main():
                         tolino_last_modified = tolino_last_modified,
                         cover_url = item['epubMetaData']['fileResource'][0]['resource'],
                         book_url = item['epubMetaData']['deliverable'][0]['resource'],
-                        book_filesize = item['epubMetaData']['fileSize']
-                        protection = item['epubMetaData']['deliverable'][0]['protectionType']
-                        transaction = item['epubMetaData']['fileSize']
+                        book_filesize = item['epubMetaData']['fileSize'],
+                        protection = item['epubMetaData']['deliverable'][0]['protectionType'],
+                        transaction = item['epubMetaData']['fileSize'],
                         rendering = item['ext_data']['renderingEngineSuitable']
                     )
                     result = session.add(book)
