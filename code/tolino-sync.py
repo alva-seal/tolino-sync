@@ -7,12 +7,6 @@ from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, func, create_engine, Float, desc
 from sqlalchemy.orm import relationship, sessionmaker
 
- 
-while True:
-    print('.')
-    time.sleep(20)
-    
-
 
 tolino_user = os.environ['TOLINO_USER']
 tolino_password = os.environ['TOLINO_PASSWORD']
@@ -76,7 +70,6 @@ else:
     file = open('data', 'rb')
     response = pickle.load(file)
     file.close()
-syncdict= response.json()
 syncdict= response
 revision = syncdict['revision']
 
