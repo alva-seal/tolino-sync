@@ -31,7 +31,7 @@ COPY code/ .
 VOLUME /config
 
 # command to run on container start
-CMD [ "python3", "tolino-sync.py"]
+CMD [ "python3", "main.py"]
 
 VOLUME /config
 VOLUME /library
