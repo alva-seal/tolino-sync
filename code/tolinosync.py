@@ -219,7 +219,8 @@ def main():
                 endPosition =  patch['value']['endPosition'] if 'endPosition' in patch['value'] else None
                 op_type = path.split('/')[3]
                 book = path.split('/')[2]
-                results = session.query(Books).filter_by(Books.tolino_identifier == book)
+                session2 = Session()
+                results = session2.query(Books).filter_by(Books.tolino_identifier == book)
                 book_id = results.id
                 patch_data = Patches(
                         position = position,
