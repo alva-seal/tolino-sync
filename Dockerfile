@@ -31,7 +31,8 @@ COPY code/ .
 VOLUME /config
 
 # command to run on container start
-CMD [ "python3", "main.py"]
+#CMD [ "python3", "main.py"]
+CMD ["gunicorn","main:app", "-c", "gunicorn_config.py"]
 
 VOLUME /config
 VOLUME /library
