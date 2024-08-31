@@ -106,7 +106,7 @@ def main():
         revision = None 
     
     try:
-        get_data = False
+        get_data = True
         if get_data:
             client = Client()
             client.login(tolino_user, tolino_password)
