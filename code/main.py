@@ -1,5 +1,6 @@
 # An object of Flask class is our WSGI application.
 from flask import Flask
+import tolino-sync
 
 # Flask constructor takes the name of 
 # current module (__name__) as argument.
@@ -12,6 +13,13 @@ app = Flask(__name__)
 # ‘/’ URL is bound with hello_world() function.
 def hello_world():
     return 'Hello World'
+    
+    
+    
+@app.route('/sync')
+def sync()
+    return tolino-sync.main()
+
 
 # main driver function
 if __name__ == '__main__':
