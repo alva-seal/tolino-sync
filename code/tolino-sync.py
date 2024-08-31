@@ -12,9 +12,9 @@ config = configparser.ConfigParser()
 config.read('/config/tolino-sync.ini')
 
 
-tolino_user = config['TOLINO_USER']
-tolino_password = config['TOLINO_PASSWORD']
-debuging = config['DEBUG']
+tolino_user = config['TOLINO']['TOLINO_USER']
+tolino_password = config['TOLINO']['TOLINO_PASSWORD']
+debuging = config['TOLINO']['DEBUG']
 
 if debugging:
     engine = create_engine('sqlite:////config/tolino-sync.db', echo = True)
