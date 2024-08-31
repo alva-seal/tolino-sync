@@ -1,5 +1,5 @@
 # An object of Flask class is our WSGI application.
-from flask import Flask
+from flask import Flask, render_template
 #from tolinosync import main
 
 # Flask constructor takes the name of 
