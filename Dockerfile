@@ -1,8 +1,6 @@
 # set base image (host OS)
 FROM ghcr.io/linuxserver/baseimage-ubuntu:noble
 
-USER=abc
-
 LABEL org.opencontainers.image.description="tolino-sync to tolino cloud and optional with calibre"
 # set version label
 ARG BUILD_DATE
