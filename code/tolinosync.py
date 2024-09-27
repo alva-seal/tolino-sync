@@ -156,7 +156,7 @@ def main():
                 else:
                     author_id = results 
                 results = session.query(Books.id).filter(Books.tolino_identifier == item['epubMetaData']['identifier'])
-                session.comit()
+                session.commit()
                 if results == None:
                     if length(item['epubMetaData']['issued']) == 13:
                         issued = datetime.datetime.fromtimestamp(item['epubMetaData']['issued']/1000)
@@ -193,7 +193,7 @@ def main():
                     session.commit()
                     return('books committed')
                 else:     
-                    return('premature end2' + str(results) + str(results.keys()))
+                    return('premature end2' + str(results) )
                 return('premature end')
     if 'patches' in syncdict:
         with Session() as session:
