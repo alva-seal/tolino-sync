@@ -156,6 +156,7 @@ def main():
                 else:
                     author_id = results 
                 results = session.query(Books.id).filter(Books.tolino_identifier == item['epubMetaData']['identifier'])
+                session.comit()
                 if results == None:
                     if length(item['epubMetaData']['issued']) == 13:
                         issued = datetime.datetime.fromtimestamp(item['epubMetaData']['issued']/1000)
